@@ -1,0 +1,9 @@
+D:\Visual Studio\Repos\HeadCam\bin\Debug\HeadCam.dll
+D:\Visual Studio\Repos\HeadCam\bin\Debug\HeadCam.pdb
+D:\Visual Studio\Repos\HeadCam\bin\Debug\ScriptHookVDotNet3.dll
+D:\Visual Studio\Repos\HeadCam\bin\Debug\ScriptHookVDotNet3.xml
+D:\Visual Studio\Repos\HeadCam\obj\Debug\HeadCam.csproj.AssemblyReference.cache
+D:\Visual Studio\Repos\HeadCam\obj\Debug\HeadCam.csproj.CoreCompileInputs.cache
+D:\Visual Studio\Repos\HeadCam\obj\Debug\HeadCam.csproj.CopyComplete
+D:\Visual Studio\Repos\HeadCam\obj\Debug\HeadCam.dll
+D:\Visual Studio\Repos\HeadCam\obj\Debug\HeadCam.pdb
