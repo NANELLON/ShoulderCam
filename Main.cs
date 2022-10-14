@@ -7,6 +7,7 @@ using GTA;
 using GTA.Native;
 using GTA.Math;
 using System.Security.AccessControl;
+using System.Windows.Forms;
 
 namespace AimCam
 {
@@ -18,13 +19,55 @@ namespace AimCam
         int replaceCam;
         bool mode;
         int delay;
+        float sidetoside = 0.4f;
+        float backtofront = -0.5f;
+        float rotation = 90.0f;
+        Keys switchKey;
         public Main()
         {
+           switchKey = Settings.GetValue("SETTINGS", "Key", Keys.X);
            replaceCam = Settings.GetValue("SETTINGS", "replaceCam", 2);
            mode = Settings.GetValue("SETTINGS", "aimOnly", false);
            delay = Settings.GetValue("SETTINGS", "resetDelay", 3000);
-            Tick += onTick;
+           Tick += onTick;
+           KeyUp += onKeyUp;
 
+        }
+        void onKeyUp(object sender, KeyEventArgs e)
+        {
+            Ped player = Game.Player.Character;
+            if (e.KeyCode == switchKey && sidetoside >= 0.4f)
+            {
+                while (sidetoside > -0.5f)
+                {
+                    Function.Call(Hash._ATTACH_CAM_TO_PED_BONE_2, headCam, player, 31086, 0.0f, rotation, 0.0f, sidetoside, backtofront, 0.07f, true);
+                    //GTA.UI.Screen.ShowSubtitle("side:" + sidetoside + "back:" + backtofront, 2000);
+                    sidetoside = sidetoside - 0.1f;
+                    backtofront = backtofront + 0.016f;
+                    rotation = rotation - 0.5f;
+                    if(sidetoside < -0.5f)
+                    {
+                        sidetoside = -0.5f;
+                    }
+                    Wait(1);
+                }
+            }
+            else if(e.KeyCode == switchKey && sidetoside <= -0.5f)
+                {
+                    while(sidetoside < 0.4f)
+                    {
+                        Function.Call(Hash._ATTACH_CAM_TO_PED_BONE_2, headCam, player, 31086, 0.0f, rotation, 0.0f, sidetoside, backtofront, 0.07f, true);
+                        //GTA.UI.Screen.ShowSubtitle("side:" + sidetoside + "back:" + backtofront, 2000);
+                        sidetoside = sidetoside + 0.1f;
+                        backtofront = backtofront - 0.016f;
+                        rotation = rotation + 0.5f;
+                    if (sidetoside > 0.4f)
+                        {
+                            sidetoside = 0.4f;
+                        }
+                        Wait(1);
+                    }
+                }
         }
         void resetCamera()
         {
@@ -39,7 +82,7 @@ namespace AimCam
             if (!cameraSet) 
             {
                 headCam = World.CreateCamera(player.Position, player.Rotation, 100.0f);
-                Function.Call(Hash._ATTACH_CAM_TO_PED_BONE_2, headCam, player, 31086, 0.0f, 90.0f, -0.5f, 0.4f, -0.5f, 0.07f, true);
+                Function.Call(Hash._ATTACH_CAM_TO_PED_BONE_2, headCam, player, 31086, 0.0f, rotation, 0.0f, sidetoside, backtofront, 0.07f, true);
                 World.RenderingCamera = headCam;
                 cameraSet = true;
             }
@@ -47,7 +90,7 @@ namespace AimCam
             if (cameraSet)
             {
                // Function.Call(Hash.SET_TIMECYCLE_MODIFIER, "secret_camera");
-               // Function.Call(Hash.SET_TIMECYCLE_MODIFIER_STRENGTH, 0.0f);
+               // Function.Call(Hash.SET_TIMECYCLE_MODIFIER_STRENGTH, 1.0f);
                 GameplayCamera.ClampPitch(0.0f, 0.0f);
                 GameplayCamera.ClampYaw(0.0f, 0.0f);
 
