@@ -17,10 +17,12 @@ namespace AimCam
         Camera headCam;
         int replaceCam;
         bool mode;
+        int delay;
         public Main()
         {
            replaceCam = Settings.GetValue("SETTINGS", "replaceCam", 2);
            mode = Settings.GetValue("SETTINGS", "aimOnly", false);
+           delay = Settings.GetValue("SETTINGS", "resetDelay", 3000);
             Tick += onTick;
 
         }
@@ -29,7 +31,7 @@ namespace AimCam
             World.RenderingCamera = null;
             World.DestroyAllCameras();
             cameraSet = false;
-            Function.Call(Hash.SET_TIMECYCLE_MODIFIER_STRENGTH, 0.0f);
+          //  Function.Call(Hash.SET_TIMECYCLE_MODIFIER_STRENGTH, 0.0f);
         }
         void setCamera()
         {
@@ -44,8 +46,8 @@ namespace AimCam
             
             if (cameraSet)
             {
-                Function.Call(Hash.SET_TIMECYCLE_MODIFIER, "secret_camera");
-                Function.Call(Hash.SET_TIMECYCLE_MODIFIER_STRENGTH, 0.0f);
+               // Function.Call(Hash.SET_TIMECYCLE_MODIFIER, "secret_camera");
+               // Function.Call(Hash.SET_TIMECYCLE_MODIFIER_STRENGTH, 0.0f);
                 GameplayCamera.ClampPitch(0.0f, 0.0f);
                 GameplayCamera.ClampYaw(0.0f, 0.0f);
 
@@ -60,37 +62,46 @@ namespace AimCam
         void onTick(object sender, EventArgs e)
         {
             Ped player = Game.Player.Character;
-            if (mode)
+
+            if (!player.IsInVehicle())
             {
-                view = Function.Call<int>(Hash.GET_FOLLOW_PED_CAM_VIEW_MODE);
-                if (view != 4)
+                if(cameraSet && World.RenderingCamera != headCam)
                 {
-                    if (player.IsAiming || !player.IsAiming && player.IsReloading)
+                    Wait(delay);
+                    resetCamera();
+                    Wait(1);
+                    setCamera();
+                }
+                if (mode)
+                {
+                    view = Function.Call<int>(Hash.GET_FOLLOW_PED_CAM_VIEW_MODE);
+
+                    if (view != 4)
+                    {
+                        if (player.IsAiming || !player.IsAiming && player.IsReloading)
+                        {
+                            setCamera();
+                        }
+                        if (!player.IsAiming && !player.IsReloading)
+                        {
+                            resetCamera();
+                        }
+                    }
+                }
+
+                if (!mode)
+                {
+                    view = Function.Call<int>(Hash.GET_FOLLOW_PED_CAM_VIEW_MODE);
+                    if (view == replaceCam)
                     {
                         setCamera();
                     }
-                    if (!player.IsAiming && !player.IsReloading)
+                    if (view != replaceCam)
                     {
                         resetCamera();
                     }
                 }
-              
             }
-            if (!mode)
-            {
-                view = Function.Call<int>(Hash.GET_FOLLOW_PED_CAM_VIEW_MODE);
-                if (view == replaceCam)
-                {
-                    setCamera();
-                }
-                if(view != replaceCam)
-                {
-                    resetCamera();
-                }
-            }
-            
-           
-            
         }
     }
 }
