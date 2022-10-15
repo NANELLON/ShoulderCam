@@ -18,21 +18,21 @@ Versions:
 <li>1.0  
 
 <li>1.1  
--Minor bug fixes  
--Improved compatibility with other camera mods (the mod automatically resets the camera if it was interrupted, after a set amount of time that is set by you in the .ini file)  
+-Minor bug fixes  <br />
+-Improved compatibility with other camera mods (the mod automatically resets the camera if it was interrupted, after a set amount of time that is set by you in the .ini file)  <br />
 
 <li>1.2  
--Some clipping issues solved  
--Added the ability to switch sides (default key - X)  
+-Some clipping issues solved  <br />
+-Added the ability to switch sides (default key - X)  <br />
   
 <li>1.3  
--Camera reset on death, for compatibility with mods like Watch Your Death  
--FPS fix  
+-Camera reset on death, for compatibility with mods like Watch Your Death  <br />
+-FPS fix  <br />
 
 Requirements:  
-<li>ASI Loader  
-<li>Script Hook V  
-<li>Community Script Hook V .NET 3.1.0  
+<li>ASI Loader  <br />
+<li>Script Hook V  <br />
+<li>Community Script Hook V .NET 3.1.0  <br />
 
-Installation:  
-<li>Extract both files into your scripts folder  
+Installation:  <br />
+<li>Extract both files into your scripts folder  <br />
