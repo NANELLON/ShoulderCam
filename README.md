@@ -36,6 +36,3 @@ Requirements:
 
 Installation:
 <li>Extract both files into your scripts folder
-
-Source code:
-<a href="https://github.com/RusLanParty/HeadCam">GitHub</a>
