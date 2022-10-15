@@ -14,6 +14,7 @@ namespace AimCam
     public class Main : Script
     {
         int view;
+        float deathHealth;
         bool cameraSet = false;
         Camera headCam;
         int replaceCam;
@@ -25,6 +26,7 @@ namespace AimCam
         Keys switchKey;
         public Main()
         {
+           deathHealth = Settings.GetValue("SETTINGS", "deathHealth", 0.0f);
            switchKey = Settings.GetValue("SETTINGS", "Key", Keys.X);
            replaceCam = Settings.GetValue("SETTINGS", "replaceCam", 2);
            mode = Settings.GetValue("SETTINGS", "aimOnly", false);
@@ -36,45 +38,52 @@ namespace AimCam
         void onKeyUp(object sender, KeyEventArgs e)
         {
             Ped player = Game.Player.Character;
-            if (e.KeyCode == switchKey && sidetoside >= 0.4f)
+            if (cameraSet && !player.IsInVehicle()) 
             {
-                while (sidetoside > -0.5f)
+                if (e.KeyCode == switchKey && sidetoside >= 0.4f)
                 {
-                    Function.Call(Hash._ATTACH_CAM_TO_PED_BONE_2, headCam, player, 31086, 0.0f, rotation, 0.0f, sidetoside, backtofront, 0.07f, true);
-                    //GTA.UI.Screen.ShowSubtitle("side:" + sidetoside + "back:" + backtofront, 2000);
-                    sidetoside = sidetoside - 0.1f;
-                    backtofront = backtofront + 0.016f;
-                    rotation = rotation - 0.5f;
-                    if(sidetoside < -0.5f)
+                    while (sidetoside > -0.5f)
                     {
-                        sidetoside = -0.5f;
+                        Function.Call(Hash._ATTACH_CAM_TO_PED_BONE_2, headCam, player, 31086, 0.0f, rotation, 0.0f, sidetoside, backtofront, 0.07f, true);
+                        //GTA.UI.Screen.ShowSubtitle("side:" + sidetoside + "back:" + backtofront, 2000);
+                        sidetoside = sidetoside - 0.1f;
+                        backtofront = backtofront + 0.016f;
+                        rotation = rotation - 0.5f;
+                        if (sidetoside < -0.5f)
+                        {
+                            sidetoside = -0.5f;
+                        }
+                        Wait(1);
                     }
-                    Wait(1);
                 }
-            }
-            else if(e.KeyCode == switchKey && sidetoside <= -0.5f)
+                else if (e.KeyCode == switchKey && sidetoside <= -0.5f)
                 {
-                    while(sidetoside < 0.4f)
+                    while (sidetoside < 0.4f)
                     {
                         Function.Call(Hash._ATTACH_CAM_TO_PED_BONE_2, headCam, player, 31086, 0.0f, rotation, 0.0f, sidetoside, backtofront, 0.07f, true);
                         //GTA.UI.Screen.ShowSubtitle("side:" + sidetoside + "back:" + backtofront, 2000);
                         sidetoside = sidetoside + 0.1f;
                         backtofront = backtofront - 0.016f;
                         rotation = rotation + 0.5f;
-                    if (sidetoside > 0.4f)
+                        if (sidetoside > 0.4f)
                         {
                             sidetoside = 0.4f;
                         }
                         Wait(1);
                     }
                 }
+            }
+           
         }
         void resetCamera()
         {
-            World.RenderingCamera = null;
-            World.DestroyAllCameras();
-            cameraSet = false;
-          //  Function.Call(Hash.SET_TIMECYCLE_MODIFIER_STRENGTH, 0.0f);
+            if (cameraSet)
+            {
+                World.RenderingCamera = null;
+                World.DestroyAllCameras();
+                cameraSet = false;
+                //  Function.Call(Hash.SET_TIMECYCLE_MODIFIER_STRENGTH, 0.0f);
+            }
         }
         void setCamera()
         {
@@ -105,7 +114,13 @@ namespace AimCam
         void onTick(object sender, EventArgs e)
         {
             Ped player = Game.Player.Character;
-
+            
+//TEMP
+            if (player.Health <= deathHealth)
+            {
+                resetCamera();
+            }
+//\TEMP
             if (!player.IsInVehicle())
             {
                 if(cameraSet && World.RenderingCamera != headCam)
@@ -135,7 +150,7 @@ namespace AimCam
                 if (!mode)
                 {
                     view = Function.Call<int>(Hash.GET_FOLLOW_PED_CAM_VIEW_MODE);
-                    if (view == replaceCam)
+                    if (view == replaceCam && player.Health > deathHealth)
                     {
                         setCamera();
                     }
