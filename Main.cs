@@ -20,8 +20,8 @@ namespace AimCam
         int replaceCam;
         bool mode;
         int delay;
-        float sidetoside = 0.4f;
-        float backtofront = -0.5f;
+        float sidetoside = 0.26f;
+        float backtofront = -0.2f;
         float rotation = 90.0f;
         Keys switchKey;
         public Main()
@@ -90,8 +90,9 @@ namespace AimCam
             Ped player = Game.Player.Character;
             if (!cameraSet) 
             {
-                headCam = World.CreateCamera(player.Position, player.Rotation, 100.0f);
-                Function.Call(Hash._ATTACH_CAM_TO_PED_BONE_2, headCam, player, 31086, 0.0f, rotation, 0.0f, sidetoside, backtofront, 0.07f, true);
+                headCam = World.CreateCamera(player.Position, player.Rotation, 65.0f);
+                Function.Call(Hash._ATTACH_CAM_TO_PED_BONE_2, headCam, player, 12844, 0.0f, rotation, 0.0f, sidetoside, backtofront, 0.1f, true);
+                Function.Call(Hash._FREEZE_PED_CAMERA_ROTATION, player);
                 World.RenderingCamera = headCam;
                 cameraSet = true;
             }
@@ -108,6 +109,7 @@ namespace AimCam
                     GameplayCamera.ClampPitch(-360.0f, 360.0f);
                     GameplayCamera.ClampYaw(-360.0f, 360.0f);
                     Function.Call(Hash.SET_CAM_AFFECTS_AIMING, headCam, false);
+                    
                 }
             }
         }
