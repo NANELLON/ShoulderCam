@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32825.248
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HeadCam", "HeadCam.csproj", "{75A64598-FEC9-44CC-91A8-093AC8157833}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoulderCam", "ShoulderCam.csproj", "{75A64598-FEC9-44CC-91A8-093AC8157833}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
