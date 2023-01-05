@@ -1,4 +1,4 @@
-# HeadCam
+# ShoulderCam
 Custom camera for GTA V, inspired by MW2's spectator camera
 
 This script adds an alternative camera view, inspired by MW2 beta spectator headcam.
