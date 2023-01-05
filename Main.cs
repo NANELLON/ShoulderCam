@@ -107,7 +107,14 @@ namespace AimCam
                 if (player.IsInVehicle())
                 {
                     view = Function.Call<int>(Hash.GET_FOLLOW_VEHICLE_CAM_VIEW_MODE);
+                if (player.IsInHeli)
+                {
+                if(view == 4)
+                    {
+                        view = replaceCam;
+                    }
                 }
+            }
                 else if (!player.IsInVehicle())
                 {
                     view = Function.Call<int>(Hash.GET_FOLLOW_PED_CAM_VIEW_MODE);
