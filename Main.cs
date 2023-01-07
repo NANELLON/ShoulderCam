@@ -68,11 +68,12 @@ namespace AimCam
                 {
                     Vector3 target = rayCast();
                     float siz = target.DistanceTo(player.Position);
-                    siz = siz / 290;
+                    siz = siz / 285;
                     Function.Call(Hash._DRAW_SPHERE, target.X, target.Y, target.Z, siz, 255, 0, 0, 1.0f);
                     GameplayCamera.ClampPitch(-360.0f, 360.0f);
                     GameplayCamera.ClampYaw(-360.0f, 360.0f);
                     Function.Call(Hash.SET_CAM_AFFECTS_AIMING, headCam, false);
+                    Function.Call(Hash.SET_FOCUS_ENTITY, player);
                 }
             }
             else
@@ -81,7 +82,7 @@ namespace AimCam
                 headCam = World.CreateCamera(player.Position, player.Rotation, 85.0f);
                 Function.Call(Hash._ATTACH_CAM_TO_PED_BONE_2, headCam, player, 31086, 0f, rotation, -8f, sidetoside, backtofront, 0.09f, true);
                 
-                //Function.Call(Hash._FREEZE_PED_CAMERA_ROTATION, player);
+                Function.Call(Hash._FREEZE_PED_CAMERA_ROTATION, player);
                 headCam.NearClip = 0f;
                 World.RenderingCamera = headCam;
                 cameraSet = true;
